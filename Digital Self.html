@@ -84,6 +84,21 @@
                 <div class="bg-[#E0F2FE] p-4 rounded-xl cursor-pointer category-card" data-category="shaping_self"><h2 class="text-lg font-semibold text-gray-800">The Polished Profile</h2><p class="text-xs text-gray-600 mb-3">How We Shape Our Digital Selves</p><div class="flex justify-between items-center"><span id="count_shaping_self" class="bg-[#BAE6FD] text-xs font-semibold px-4 py-1.5 rounded-full"></span><i class="ph ph-arrow-right text-xl"></i></div></div>
                 <div class="bg-[#FEE2E2] p-4 rounded-xl cursor-pointer category-card" data-category="hidden_dangers"><h2 class="text-lg font-semibold text-gray-800">Navigating the Dangers</h2><p class="text-xs text-gray-600 mb-3">The Psychology of Online Risks</p><div class="flex justify-between items-center"><span id="count_hidden_dangers" class="bg-[#FECACA] text-xs font-semibold px-4 py-1.5 rounded-full"></span><i class="ph ph-arrow-right text-xl"></i></div></div>
             </main>
+            <footer class="flex flex-col justify-center items-center pt-2">
+      <div class="w-full h-px bg-gray-200 mb-2"></div>
+            <!-- This is the empty space where you can add a button -->
+      <div style="display:flex; justify-content:center; margin:2px 0;">
+            <button id="backButton" style="padding:10px 14px;border-radius:8px;border:none;background:#2563eb;color:#fff;font-weight:600;cursor:pointer;">
+              Back to Topics
+            </button>
+            <script>
+         // Script makes the back button work
+      document.getElementById('backButton').addEventListener('click', () => {
+        window.location.href = 'index.html'; // goes back to selector page
+      });
+    </script>
+  </div>
+</footer>
         </div>
 
 
