@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FlashCards — Topics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    :root {
+        --bg-color: #f4f5f7;
+        --card-bg: #ffffff;
+        --text-color: #1a1a1a;
+        --subtle-text: #6b7280;
+        --border-color: #e5e7eb;
+        --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --border-radius-lg: 24px;
+        --border-radius-md: 16px;
+    }
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    .phone-screen {
+        width: 100%;
+        max-width: 400px;
+        height: 85vh;
+        max-height: 800px;
+        background-color: var(--card-bg);
+        border-radius: var(--border-radius-lg);
+        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        border: 1px solid var(--border-color);
+        padding: 24px;
+        box-sizing: border-box;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+    .header-text h1 {
+        font-size: 28px;
+        margin: 0;
+        font-weight: 700;
+    }
+    .header-text p {
+        color: var(--subtle-text);
+        margin: 4px 0 0 0;
+        font-size: 16px;
+    }
+    .user-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #d1d5db;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 600;
+        color: var(--card-bg);
+    }
+    .topic-card {
+        padding: 20px;
+        margin-bottom: 16px;
+        border-radius: var(--border-radius-md);
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-decoration: none;
+    }
+    .topic-card:hover {
+        transform: scale(1.02);
+    }
+    .cat-info h2 {
+        margin: 0 0 4px 0;
+        font-size: 18px;
+        font-weight: 600;
+    }
+    .cat-info p {
+        margin: 0;
+        font-size: 14px;
+    }
+    .cat-arrow {
+        width: 24px;
+        height: 24px;
+    }
+    .topic-1 { background-color: #dbeafe; color: #1e40af; }
+    .topic-2 { background-color: #fee2e2; color: #991b1b; }
+    .topic-3 { background-color: #d1fae5; color: #065f46; }
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #d1d5db;
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-screen">
+    <header class="header">
+        <div class="header-text">
+            <h1>FlashCard Topics</h1>
+            <p>Select a study set</p>
+        </div>
+        <div class="user-icon">U</div>
+    </header>
+    
+    <main id="topicsGrid" class="flex-grow space-y-4 overflow-y-auto custom-scrollbar pr-2">
+      <!-- Topic cards will be dynamically inserted here by JavaScript -->
+    </main>
+  </div>
+
+  <script>
+    /*
+      === HOW TO ADD A NEW TOPIC ===
+      Each topic is an object in the "topics" array below.
+      Make sure each object ends with a comma, except for the very last one.
+      
+      Example format:
+      { 
+        title: "Display Title", 
+        filename: "file_name.html", 
+        description: "A short description.",
+        colorClass: "topic-1" // Use topic-1, topic-2, topic-3 etc.
+      },
+    */
+
+    const topics = [
+      // Topic 1
+      { 
+        title: "NANDA Diagnoses", 
+        filename: "nanda_flashcards.html", 
+        description: "Nursing diagnoses, definitions, and categories.",
+        colorClass: "topic-1"
+      },
+
+      // Topic 2
+      { 
+        title: "AI & E-Commerce Law", 
+        filename: "ai_law_flashcards_uniform.html", 
+        description: "AI, Generative AI, and RA 8792.",
+        colorClass: "topic-2"
+      },
+
+      // Topic 3
+      { 
+        title: "The Digital Self", 
+        filename: "digital_self_flashcards.html", 
+        description: "Online personas and digital psychology.",
+        colorClass: "topic-3"
+      }
+      
+      // NOTE: TO ADD ANOTHER TOPIC, COPY ONE OF THE BLOCKS ABOVE,
+      // PASTE IT HERE, AND CHANGE THE DETAILS.
+      // Make sure the block before it has a comma at the end!
+    ];
+
+    const topicsGrid = document.getElementById('topicsGrid');
+
+    // Function to update UI with given list of topics
+    function populateUI(list) {
+      topicsGrid.innerHTML = '';
+      list.forEach(t => {
+        const cardLink = document.createElement('a');
+        cardLink.href = t.filename;
+        cardLink.className = `topic-card ${t.colorClass}`;
+
+        cardLink.innerHTML = `
+          <div class="cat-info">
+              <h2>${t.title}</h2>
+              <p>${t.description || ''}</p>
+          </div>
+          <svg class="cat-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+        `;
+        
+        topicsGrid.appendChild(cardLink);
+      });
+    }
+
+    // Initial load
+    populateUI(topics);
+  </script>
+</body>
+</html>
+
