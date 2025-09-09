@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & E-Commerce Law Flashcards</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7ff; /* A soft, off-white background */
+        }
+        /* Custom styles for the flippable card */
+        .card-container {
+            perspective: 1000px;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card-container.is-flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            text-align: center;
+            border-radius: 1rem;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+            background-color: #f0f0f8;
+        }
+        .phone-screen {
+             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        /* Custom scrollbar for webkit browsers */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 bg-gray-50">
+
+
+    <div class="w-full max-w-sm mx-auto">
+        <!-- Screen 1: Category Selection -->
+        <div id="screen1" class="phone-screen w-full mx-auto bg-white rounded-3xl p-4 border border-gray-200 flex flex-col h-[700px]">
+            <header class="flex justify-between items-center mb-6 px-2">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">Study Topics</h1>
+                    <p class="text-sm text-gray-500">Pick a set to practice</p>
+                </div>
+                <img src="https://placehold.co/40x40/E2E8F0/4A5568?text=U" alt="User" class="rounded-full">
+            </header>
+            
+            <main class="flex-grow space-y-4 overflow-y-auto custom-scrollbar pr-2">
+                <div class="bg-[#E0E7FF] p-4 rounded-xl cursor-pointer category-card" data-category="ai_for_everyone"><h2 class="text-lg font-semibold text-gray-800">AI for Everyone</h2><p class="text-xs text-gray-600 mb-3">Contributors: Coursera</p><div class="flex justify-between items-center"><span id="count_ai_for_everyone" class="bg-[#C7D2FE] text-xs font-semibold px-4 py-1.5 rounded-full"></span><i class="ph ph-arrow-right text-xl"></i></div></div>
+                <div class="bg-[#FEE2E2] p-4 rounded-xl cursor-pointer category-card" data-category="generative_ai"><h2 class="text-lg font-semibold text-gray-800">Generative AI</h2><p class="text-xs text-gray-600 mb-3">Contributors: Google</p><div class="flex justify-between items-center"><span id="count_generative_ai" class="bg-[#FECACA] text-xs font-semibold px-4 py-1.5 rounded-full"></span><i class="ph ph-arrow-right text-xl"></i></div></div>
+                <div class="bg-[#D1FAE5] p-4 rounded-xl cursor-pointer category-card" data-category="ecommerce_law"><h2 class="text-lg font-semibold text-gray-800">RA 8792: E-Commerce Law</h2><p class="text-xs text-gray-600 mb-3">Contributors: PH Gov</p><div class="flex justify-between items-center"><span id="count_ecommerce_law" class="bg-[#A7F3D0] text-xs font-semibold px-4 py-1.5 rounded-full"></span><i class="ph ph-arrow-right text-xl"></i></div></div>
+            </main>
+
+            <footer class="flex justify-center items-center pt-4 border-t mt-4">
+                <!-- Back button -->
+<div style="display:flex; justify-content:center; margin-top:20px; margin-bottom:10px;">
+<button id="backButton" style="padding:10px 14px;border-radius:8px;border:none;background:#2563eb;color:#fff;font-weight:600;cursor:pointer;">
+  Back to Topics
+</button>
+<script>
+  // Script makes the back button work
+  document.getElementById('backButton').addEventListener('click', () => {
+    window.location.href = 'index.html'; // goes back to selector page
+  });
+</script>
+</div>
+            </footer>
+        </div>
+
+        <!-- Screen 2: Flashcard View -->
+        <div id="screen2" class="phone-screen w-full max-w-sm mx-auto bg-white rounded-3xl p-4 border border-gray-200 flex-col h-[700px] hidden">
+            <header class="flex justify-between items-center mb-4">
+                <i id="backButton2" class="ph ph-arrow-left text-2xl cursor-pointer"></i>
+                <div class="text-center">
+                    <h1 id="categoryTitle" class="text-xl font-bold text-gray-800">Category</h1>
+                    <p id="categoryContributor" class="text-sm text-gray-500">Contributors: Various</p>
+                </div>
+                <i class="ph ph-info text-2xl"></i>
+            </header>
+
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+                <div id="progressBar" class="bg-blue-500 h-2 rounded-full" style="width: 0%"></div>
+            </div>
+
+            <main class="flex-grow flex flex-col justify-center items-center space-y-4">
+                <div id="flashcard" class="card-container w-full h-48 bg-gray-100 rounded-2xl">
+                    <div class="card-inner">
+                        <div class="card-front bg-white border-2 border-gray-200">
+                            <span class="text-3xl text-gray-400">&ldquo;</span>
+                            <h2 id="cardTerm" class="text-xl font-semibold text-gray-800">Term</h2>
+                            <span class="text-3xl text-gray-400">&rdquo;</span>
+                        </div>
+                        <div class="card-back border-2 border-gray-300">
+                            <p id="cardDefinition" class="text-base text-gray-700"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full p-4 border-2 border-dashed border-red-200 rounded-2xl text-center">
+                     <h3 class="text-sm font-semibold text-gray-500">DEFINITION</h3>
+                     <p class="text-xs text-gray-400 mb-2">Tap the card to flip</p>
+                     <button id="flipButton" class="bg-red-100 text-red-700 font-semibold py-2 px-6 rounded-lg w-full">Flip Card</button>
+                </div>
+            </main>
+
+            <footer class="flex justify-between items-center pt-4 w-full">
+                <button id="prevButton" class="bg-white text-gray-700 rounded-full p-3 shadow-md border border-gray-200 hover:bg-gray-100 transition-colors">
+                    <i class="ph ph-arrow-left text-2xl"></i>
+                </button>
+                <button id="nextButton" class="bg-white text-gray-700 rounded-full p-3 shadow-md border border-gray-200 hover:bg-gray-100 transition-colors">
+                    <i class="ph ph-arrow-right text-2xl"></i>
+                </button>
+            </footer>
+        </div>
+    </div>
+
+<script>
+    const flashcardData = {
+        ai_for_everyone: {
+            contributor: 'Coursera',
+            cards: [
+                { term: 'Core message of implementing AI', definition: 'AI is a business transformation, not just a technology. Success depends on aligning AI with business strategy.' },
+                { term: 'How a Smart Speaker works (4 steps)', definition: '1. <b>Trigger Word</b>: Detects the wake word.<br>2. <b>Speech Recognition</b>: Converts audio to text.<br>3. <b>Intent Recognition</b>: Classifies the command\'s category.<br>4. <b>Execution</b>: Connects to the correct service to fulfill the request.' },
+                { term: 'Three business impacts of Smart Speakers', definition: '1. Enhances customer convenience.<br>2. Collects valuable user data.<br>3. Expands the company\'s ecosystem of services.' },
+                { term: 'Sensor Fusion in a self-driving car', definition: 'It combines data from multiple sources, like cameras and radar, to get an accurate understanding of its environment.' },
+                { term: 'Four main components of a self-driving car', definition: '1. <b>Sensor Input</b> (cameras, radar)<br>2. <b>Object Detection</b> (cars, pedestrians)<br>3. <b>Motion Planning</b> (calculates a safe path)<br>4. <b>Control Execution</b> (steering, braking)' },
+                { term: 'Role of an AI Product Manager', definition: 'They help decide what to build by determining what is both feasible and valuable for the business.' },
+                { term: 'Role of a Machine Learning Engineer', definition: 'They design, train, and optimize machine learning models for performance and scalability.' },
+                { term: 'Purpose of the AI Transformation Playbook', definition: 'A guideline for companies to successfully adopt and integrate AI by helping them choose projects, build teams, and align AI with business goals.' },
+                { term: 'Two key "Don\'ts" in AI Pitfalls', definition: '<b>Don\'t</b> expect AI to solve everything.<br><b>Don\'t</b> expect the AI project to work the first time.' },
+                { term: 'Two key "Do\'s" in AI Pitfalls', definition: '<b>Do</b> be realistic about what AI can do.<br><b>Do</b> plan for AI development to be an iterative process.' },
+                { term: 'The "Goldilocks rule" for AI\'s impact', definition: 'Finding a balanced middle ground: avoiding over-optimism (AI will solve everything) and over-pessimism (AI is a sentient threat).' },
+                { term: 'What is an "adversarial attack" on AI?', definition: 'A technique used to fool an AI model by providing deceptive input, causing it to make a mistake.' },
+                { term: 'How does AI become biased?', definition: 'It learns from large datasets that contain historical human biases, stereotypes, and unfair practices. The AI absorbs these biases during training.' },
+                { term: 'Two major risks of adverse use of AI', definition: '1. The creation and spread of misinformation via deepfakes.<br>2. Threats to democracy and personal privacy.' },
+                { term: 'What is "Leapfrogging Technology"?', definition: 'When developing economies skip older, less efficient technologies and adopt the newest AI-driven solutions directly, potentially accelerating growth.' },
+                { term: 'Likely impact of AI on jobs', definition: 'AI may displace repetitive jobs but will also create new roles, requiring workers to be reskilled and upskilled.' },
+                { term: 'Business impact of self-driving cars', definition: '1. <b>Safety</b>: Reduce accidents from human error.<br>2. <b>Efficiency</b>: Optimize routes and traffic flow.<br>3. <b>Accessibility</b>: Provide mobility for elderly and disabled individuals.' }
+            ]
+        },
+        generative_ai: {
+            contributor: 'Google',
+            cards: [
+                { term: 'Primary function of Generative AI', definition: 'To produce various types of new, original content (text, images, audio, etc.) based on the data it has been trained on.' },
+                { term: 'Hierarchy of AI subcategories', definition: 'Artificial Intelligence -> Machine Learning -> Deep Learning -> Generative AI.' },
+                { term: 'Machine Learning vs. Deep Learning', definition: '<b>Machine Learning</b> is learning from data without explicit programming. <b>Deep Learning</b> is a subset of ML that uses artificial neural networks for more complex tasks.' },
+                { term: 'Supervised vs. Unsupervised Learning', definition: '<b>Supervised Learning</b> trains on labeled data (with correct answers). <b>Unsupervised Learning</b> trains on unlabeled data to find hidden patterns on its own.' },
+                { term: 'What is Reinforcement Learning?', definition: 'Teaching a model to make decisions by rewarding it for good choices and penalizing it for bad ones, learning through trial and error.' },
+                { term: 'Discriminative vs. Generative model', definition: 'A <b>Discriminative</b> model classifies data (e.g., is this a dog or a cat?). A <b>Generative</b> model creates new data instances (e.g., generate a new image of a dog).' },
+                { term: 'When is y = f(x) considered Generative AI?', definition: 'When the output \'y\' is complex content like Natural Language, an Image, or Audio, not just a number, class, or probability.' },
+                { term: 'What is a foundation model?', definition: 'A large-scale model (like Gemini or GPT) trained on a massive amount of data, which serves as a powerful base that can be adapted for many different tasks.' },
+                { term: 'What is a "Transformer"?', definition: 'The powerful neural network architecture behind modern language models, consisting of an <b>encoder</b> and a <b>decoder</b>.' },
+                { term: 'What are "hallucinations" in GenAI?', definition: 'Outputs generated by the model that are nonsensical, factually incorrect, or grammatically wrong.' },
+                { term: 'Two causes of AI hallucinations', definition: '1. Not enough data or noisy/dirty training data.<br>2. Not enough context or constraints provided in the prompt.' },
+                { term: 'What is a Text-to-Image model?', definition: 'A model trained on a large dataset of images and their text descriptions, allowing it to generate a new image from a text prompt.' },
+                { term: 'What is "diffusion" in image models?', definition: 'A technique where the model starts with random noise and gradually refines it to match the text prompt and form a coherent image.' },
+                { term: 'Use of a Text-to-3D model', definition: 'It generates three-dimensional objects from a text description for use in games, simulations, or other 3D environments.' },
+                { term: 'What is a Text-to-Task model?', definition: 'A model trained to perform a specific, defined action based on a text input, turning a command into an operation.' },
+                { term: 'What is Vertex AI Agent Builder?', definition: 'A tool within Google\'s Vertex AI platform that helps users build applications like chatbots and search engines with little coding experience.' },
+                { term: 'What does "multimodal" mean for an AI model?', definition: 'It means the model (like Gemini) can understand and process information from multiple types of data, including text, images, audio, and code.' }
+            ]
+        },
+        ecommerce_law: {
+            contributor: 'PH Gov',
+            cards: [
+                { term: 'Official name of RA 8792', definition: 'The Electronic Commerce Act of 2000.' },
+                { term: 'What event led to RA 8792?', definition: 'The "ILOVEYOU" computer worm in May 2000. No laws existed at the time to prosecute its creator.' },
+                { term: 'What is a "click and mortar" store?', definition: 'A business with both a physical presence (brick and mortar) and an online e-commerce presence.' },
+                { term: 'What is B2C e-commerce?', definition: '<b>Business-to-Consumer</b>: The sale of goods and services from a business directly to the general public.' },
+                { term: 'What is C2B e-commerce?', definition: '<b>Consumer-to-Business</b>: When a consumer sells goods or services to a business (e.g., a freelancer selling stock photos).' },
+                { term: 'What is B2B e-commerce?', definition: '<b>Business-to-Business</b>: Takes place between two businesses, where one provides services or products to the other.' },
+                { term: 'What is C2C e-commerce?', definition: '<b>Consumer-to-Consumer</b>: Takes place between two consumers, often through an online marketplace or auction site.' },
+                { term: 'Primary objective of the E-Commerce Act', definition: 'To facilitate electronic transactions by giving legal recognition and ensuring the authenticity and reliability of electronic documents and signatures.' },
+                { term: 'Legal status of electronic documents (Sec 6-8)', definition: 'They have the same legal effect, validity, and enforceability as their physical, paper-based counterparts.' },
+                { term: 'What does Section 16 state about contracts?', definition: 'It confirms the formation and validity of contracts made in electronic form.' },
+                { term: 'What does Section 27 mandate for the government?', definition: 'It required all government offices to be capable of using electronic transactions and documents by June 2002.' },
+                { term: 'What is "RPWEB" (Section 28)?', definition: 'A government strategy to connect all its offices to the Internet and provide universal, low-cost internet access to the public.' },
+                { term: 'Which agency supervises e-commerce (Section 29)?', definition: 'The Department of Trade and Industry (DTI).' },
+                { term: 'Penalty for hacking under Section 33', definition: 'A fine of at least P100,000 up to the maximum commensurate damage, and imprisonment of 6 months to 3 years.' },
+                { term: 'Penalty for online piracy', definition: 'The penalties are the same as for hacking.' },
+                { term: 'Maximum penalty for other violations of the Act', definition: 'A maximum fine of one million pesos (P1,000,000) or six (6) years of imprisonment.' }
+            ]
+        }
+    };
+
+    const screen1 = document.getElementById('screen1');
+    const screen2 = document.getElementById('screen2');
+    const categoryCards = document.querySelectorAll('.category-card');
+    const backButton2 = document.getElementById('backButton2');
+    const categoryTitle = document.getElementById('categoryTitle');
+    const categoryContributor = document.getElementById('categoryContributor');
+    const progressBar = document.getElementById('progressBar');
+    const flashcard = document.getElementById('flashcard');
+    const cardTerm = document.getElementById('cardTerm');
+    const cardDefinition = document.getElementById('cardDefinition');
+    const flipButton = document.getElementById('flipButton');
+    const nextButton = document.getElementById('nextButton');
+    const prevButton = document.getElementById('prevButton');
+
+    let currentCategory = '';
+    let currentDeck = [];
+    let currentIndex = 0;
+
+    function setupTermCounts() {
+        document.getElementById('count_ai_for_everyone').textContent = `${flashcardData.ai_for_everyone.cards.length} Terms`;
+        document.getElementById('count_generative_ai').textContent = `${flashcardData.generative_ai.cards.length} Terms`;
+        document.getElementById('count_ecommerce_law').textContent = `${flashcardData.ecommerce_law.cards.length} Terms`;
+    }
+
+    function showScreen(screen) {
+        screen1.classList.add('hidden');
+        screen1.classList.remove('flex');
+        screen2.classList.add('hidden');
+        screen2.classList.remove('flex');
+        
+        screen.classList.remove('hidden');
+        screen.classList.add('flex');
+    }
+
+    function updateProgressBar() {
+        if (currentDeck.length === 0) {
+            progressBar.style.width = '0%';
+            return;
+        }
+        const progress = ((currentIndex + 1) / currentDeck.length) * 100;
+        progressBar.style.width = `${progress}%`;
+    }
+
+    function loadCard() {
+        if (currentDeck.length > 0 && currentIndex < currentDeck.length) {
+            flashcard.classList.remove('is-flipped');
+            setTimeout(() => {
+                cardTerm.innerHTML = currentDeck[currentIndex].term;
+                cardDefinition.innerHTML = currentDeck[currentIndex].definition;
+            }, 250);
+            updateProgressBar();
+        } else {
+            flashcard.classList.remove('is-flipped');
+             setTimeout(() => {
+                cardTerm.textContent = "Deck Complete!";
+                cardDefinition.innerHTML = "You've reviewed all cards. Click an arrow to restart.";
+            }, 250);
+            if(currentDeck.length > 0) progressBar.style.width = '100%';
+        }
+    }
+    
+    categoryCards.forEach(card => {
+        card.addEventListener('click', () => {
+            currentCategory = card.dataset.category;
+            const categoryData = flashcardData[currentCategory];
+            currentDeck = categoryData.cards || [];
+            currentIndex = 0;
+            categoryTitle.textContent = card.querySelector('h2').textContent;
+            categoryContributor.textContent = `Contributors: ${categoryData.contributor}`;
+            loadCard();
+            showScreen(screen2);
+        });
+    });
+
+    backButton2.addEventListener('click', () => {
+        showScreen(screen1);
+    });
+
+    flipButton.addEventListener('click', () => {
+        flashcard.classList.toggle('is-flipped');
+    });
+
+    flashcard.addEventListener('click', () => {
+        flashcard.classList.toggle('is-flipped');
+    });
+    
+    function navigate(direction) {
+        if (currentDeck.length === 0) return;
+        let newIndex = currentIndex + direction;
+
+        if (newIndex >= currentDeck.length) {
+            newIndex = 0; // Loop to start from end
+        } else if (newIndex < 0) {
+            newIndex = currentDeck.length - 1; // Loop to end from start
+        }
+        currentIndex = newIndex;
+        loadCard();
+    }
+
+    nextButton.addEventListener('click', () => navigate(1));
+    prevButton.addEventListener('click', () => navigate(-1));
+
+    document.addEventListener('DOMContentLoaded', setupTermCounts);
+
+</script>
+</body>
+</html>
